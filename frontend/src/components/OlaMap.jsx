@@ -25,7 +25,7 @@ export default function Olamaps() {
 
   return (
     <>
-      <h1 class="mt-8 ml-4 text-xl font-bold leading-none tracking-tight text-gray-900 md:text-xl lg:text-xl dark:text-white">
+      <h1 className="mt-8 ml-4 text-xl font-bold leading-none tracking-tight text-gray-900 md:text-xl lg:text-xl dark:text-white">
         Check what's happening in your nearby
       </h1>
       <div className="mt-3 flex justify-center items-center ml-4 mr-4">
