@@ -1,8 +1,8 @@
 # Tasks for frontend
 
-Learn html css js : [https://www.youtube.com/watch?v=_GTMOmRrqkU]()
+Learn html css js : [https://www.youtube.com/watch?v=_GTMOmRrqkU](https://www.youtube.com/watch?v=_GTMOmRrqkU)
 
-Learn react components: [https://www.youtube.com/watch?v=Rh3tobg7hEo]()
+Learn react components: [https://www.youtube.com/watch?v=Rh3tobg7hEo](https://www.youtube.com/watch?v=Rh3tobg7hEo)
 
 ### create components using ai(claude & gpt):
 
