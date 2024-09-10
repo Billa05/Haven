@@ -6,7 +6,7 @@ import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
 export default function Olamaps() {
   useEffect(() => {
     const olaMaps = new OlaMaps({
-      apiKey: process.env.MY_OLA_API_KEY,
+      apiKey: process.env.NEXT_PUBLIC_MY_OLA_API_KEY,
     });
 
     const myMap = olaMaps.init({
