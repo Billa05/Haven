@@ -1,10 +1,30 @@
 "use client";
-import { useEffect } from "react";
+
+import { useEffect, useState } from "react";
 import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
+import EmojiMap from "./EmojiMap";
 
 export default function Olamaps() {
+  const [loc, setLoc] = useState(false);
+
   useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLoc(true);
+        },
+        (error) => {
+          console.log(error);
+          initializeMap();
+        }
+      );
+    } else {
+      initializeMap();
+    }
+  }, []);
+
+  const initializeMap = () => {
     const olaMaps = new OlaMaps({
       apiKey: process.env.NEXT_PUBLIC_MY_OLA_API_KEY,
     });
@@ -14,7 +34,7 @@ export default function Olamaps() {
         "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
       container: "map",
       center: [80.248357, 13.084622],
-      zoom: 10,
+      zoom: 4,
     });
 
     myMap.scrollZoom.disable();
@@ -32,7 +52,7 @@ export default function Olamaps() {
         color: "red",
         draggable: true,
       })
-      .setLngLat([80.248357, 13.084622])
+      .setLngLat([78.9629, 20.5937])
       .setPopup(popup)
       .addTo(myMap);
 
@@ -41,14 +61,18 @@ export default function Olamaps() {
         myMap.remove();
       }
     };
-  }, []);
+  };
 
   return (
     <>
-      <div
-        id="map"
-        className="w-full h-full md:h-128 lg:h-144 rounded-lg p-4"
-      ></div>
+      {loc ? (
+        <EmojiMap />
+      ) : (
+        <div
+          id="map"
+          className="w-full h-full md:h-128 lg:h-144 rounded-lg p-4"
+        ></div>
+      )}
     </>
   );
 }

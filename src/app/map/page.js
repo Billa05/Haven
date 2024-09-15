@@ -5,12 +5,20 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { CityData } from "../actions/CItyMapData";
 
 export default function Home() {
   const [city, setCity] = useState("");
   const [isBlurred, setIsBlurred] = useState(true);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
+    CityData(city)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     e.preventDefault();
     if (city.trim() !== "") {
       setIsBlurred(false);
@@ -27,7 +35,7 @@ export default function Home() {
       <div className={`${isBlurred ? "filter blur-md" : ""}`}>
         <div className="p-10">
           <div className="rounded-md aspect-square">
-            <Olamaps />
+            {/* <Olamaps /> */}
           </div>
         </div>
       </div>
