@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect } from "react";
 import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
@@ -13,9 +13,28 @@ export default function Olamaps() {
       style:
         "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
       container: "map",
-      center: [77.61648476788898, 12.931423492103944],
-      zoom: 15,
+      center: [80.248357, 13.084622],
+      zoom: 10,
     });
+
+    myMap.scrollZoom.disable();
+    // myMap.doubleClickZoom.disable();
+    // myMap.boxZoom.disable();
+
+    const popup = olaMaps
+      .addPopup({ offset: [0, -30], anchor: "bottom" })
+      .setHTML("<div>This is Popup</div>");
+
+    olaMaps
+      .addMarker({
+        offset: [0, 6],
+        anchor: "bottom",
+        color: "red",
+        draggable: true,
+      })
+      .setLngLat([80.248357, 13.084622])
+      .setPopup(popup)
+      .addTo(myMap);
 
     return () => {
       if (myMap) {

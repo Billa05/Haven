@@ -1,0 +1,11 @@
+Report Number,Date Reported,Date of Occurrence,Time of Occurrence,City,Crime Code,Crime Description,Victim Age,Victim Gender,Weapon Used,Crime Domain,Police Deployed,Case Closed,Date Case Closed,Lat,Long,country,iso2,State
+1,02-01-2020 00:00,01-01-2020 00:00,01-01-2020 01:11,Ahmedabad,576,IDENTITY THEFT,16,M,Blunt Object,Violent Crime,13,No,,23.025793,72.587265,India,IN,Gujarat
+2,01-01-2020 19:00,01-01-2020 01:00,01-01-2020 06:26,Chennai,128,HOMICIDE,37,M,Poison,Other Crime,9,No,,13.084622,80.248357,India,IN,Tamil Nadu 
+3,02-01-2020 05:00,01-01-2020 02:00,01-01-2020 14:30,Ludhiana,271,KIDNAPPING,48,F,Blunt Object,Other Crime,15,No,,30.912042,75.853789,India,IN,Punjab
+4,01-01-2020 05:00,01-01-2020 03:00,01-01-2020 14:46,Pune,170,BURGLARY,49,F,Firearm,Other Crime,1,Yes,29-04-2020 05:00,18.513271,73.849852,India,IN,Maharashtra
+5,01-01-2020 21:00,01-01-2020 04:00,01-01-2020 16:51,Pune,421,VANDALISM,30,F,Other,Other Crime,18,Yes,08-01-2020 21:00,18.513271,73.849852,India,IN,Maharashtra
+6,02-01-2020 03:00,01-01-2020 05:00,01-01-2020 17:09,Delhi,442,ASSAULT,16,M,Firearm,Violent Crime,18,Yes,30-03-2020 03:00,28.651952,77.231495,India,IN,Delhi
+7,01-01-2020 16:00,01-01-2020 06:00,01-01-2020 14:08,Chennai,172,VEHICLE - STOLEN,64,F,Knife,Violent Crime,13,Yes,24-03-2020 16:00,13.084622,80.248357,India,IN,Tamil Nadu 
+8,02-01-2020 10:00,01-01-2020 07:00,02-01-2020 06:33,Chennai,169,COUNTERFEITING,78,X,Knife,Other Crime,8,No,,13.084622,80.248357,India,IN,Tamil Nadu 
+9,04-01-2020 03:00,01-01-2020 08:00,02-01-2020 06:34,Mumbai,338,EXTORTION,41,X,Blunt Object,Other Crime,1,No,,18.987807,72.836447,India,IN,Maharashtra
+10,03-01-2020 07:00,01-01-2020 09:00,01-01-2020 17:50,Chennai,497,PUBLIC INTOXICATION,29,M,Knife,Other Crime,4,No,,13.084622,80.248357,India,IN,Tamil Nadu 
