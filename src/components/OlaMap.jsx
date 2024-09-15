@@ -33,7 +33,7 @@ export default function Olamaps() {
       style:
         "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
       container: "map",
-      center: [80.248357, 13.084622],
+      center: [78.9629, 20.5937],
       zoom: 4,
     });
 

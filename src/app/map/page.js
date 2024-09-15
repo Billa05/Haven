@@ -6,22 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { CityData } from "../actions/CItyMapData";
+import EmojiMap from "@/components/EmojiMap";
 
 export default function Home() {
   const [city, setCity] = useState("");
+  const [dcity, setdCity] = useState("");
   const [isBlurred, setIsBlurred] = useState(true);
 
   const handleSearch = async (e) => {
-    CityData(city)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    
     e.preventDefault();
-    if (city.trim() !== "") {
+    if (dcity.trim() !== "") {
       setIsBlurred(false);
+      setCity(dcity);
     }
   };
 
@@ -35,7 +32,7 @@ export default function Home() {
       <div className={`${isBlurred ? "filter blur-md" : ""}`}>
         <div className="p-10">
           <div className="rounded-md aspect-square">
-            {/* <Olamaps /> */}
+            {city && <EmojiMap City={city}/>}
           </div>
         </div>
       </div>
@@ -45,9 +42,9 @@ export default function Home() {
             <Input
               type="text"
               placeholder="Enter a city"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="w-full text-black"
+              value={dcity}
+              onChange={(e) => setdCity(e.target.value)}
+              className="w-full text-white"
             />
             <Button type="submit" className="w-full">
               Search
