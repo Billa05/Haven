@@ -1,11 +1,9 @@
 "use client";
 
-import Olamaps from "@/components/OlaMap";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { CityData } from "../actions/CItyMapData";
 import EmojiMap from "@/components/EmojiMap";
 
 export default function Home() {
@@ -13,12 +11,15 @@ export default function Home() {
   const [dcity, setdCity] = useState("");
   const [isBlurred, setIsBlurred] = useState(true);
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+
   const handleSearch = async (e) => {
-    
     e.preventDefault();
     if (dcity.trim() !== "") {
       setIsBlurred(false);
-      setCity(dcity);
+      setCity(capitalizeFirstLetter(dcity));
     }
   };
 
@@ -30,9 +31,26 @@ export default function Home() {
         </Link>
       </div>
       <div className={`${isBlurred ? "filter blur-md" : ""}`}>
+        <div className="flex justify-center items-center">
+          <form
+            onSubmit={handleSearch}
+            className="w-full max-w-sm space-y-2 flex justify-center items-center"
+          >
+            <Input
+              type="text"
+              placeholder="Enter a city"
+              value={dcity}
+              onChange={(e) => setdCity(e.target.value)}
+              className="w-full text-white"
+            />
+            <Button type="submit" className="w-full ml-3">
+              Search
+            </Button>
+          </form>
+        </div>
         <div className="p-10">
           <div className="rounded-md aspect-square">
-            {city && <EmojiMap City={city}/>}
+            {city && <EmojiMap City={city} />}
           </div>
         </div>
       </div>

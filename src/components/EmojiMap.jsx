@@ -81,6 +81,15 @@ export default function EmojiMap({ City }) {
       zoom: 11,
     });
 
+    olaMaps
+      .addMarker({
+        offset: [0, 6],
+        anchor: "bottom",
+        color: "red",
+      })
+      .setLngLat([long, lat])
+      .addTo(myMap);
+
     // myMap.scrollZoom.disable();
 
     // Function to get marker image based on crime description
@@ -138,7 +147,6 @@ export default function EmojiMap({ City }) {
           anchor: "bottom",
         })
         .setLngLat([addRandomOffset(long), addRandomOffset(lat)])
-        // .setLngLat([long, lat])
         .setPopup(popup)
         .addTo(myMap);
     });
