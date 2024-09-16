@@ -92,29 +92,48 @@ export default function EmojiMap({ City }) {
 
     // myMap.scrollZoom.disable();
 
-    // Function to get marker image based on crime description
     const getMarkerImage = (crimeDescription) => {
       switch (crimeDescription.toLowerCase()) {
         case "vandalism":
         case "arson":
           return "/emoji/ARSON.png";
         case "traffic violation":
-        case "vehicle stolen":
+        case "vehicle - stolen":
           return "/emoji/VEHICLE.png";
         case "burglary":
         case "shoplifting":
+        case "robbery":
           return "/emoji/BURGLARY.png";
         case "domestic violence":
-        case "sexual assault":
+        case "assault":
           return "/emoji/ASSAULT.png";
-        default:
+        case "sexual assault":
+          return "/emoji/SEXUAL ASSAULT.png"
+        case "homicide":
+          return "/emoji/HOMICIDE.png"
+        case "public intoxication":
+          return "/emoji/PUBLIC INTOXICATION.png"
+        case "kidnapping":
+          return "/emoji/KIDNAPPING.png";
+        case "drug offense":
+          return "/emoji/DRUG OFFENSE.png";
+        case "cybercrime":
+          return "/emoji/CYBERCRIME.png";
+        case "identity theft":
+          return "/emoji/identitytheft.png";
+        case "fraud":
+          return "/emoji/FRAUD.png";
+        case "extortion":
           return "/emoji/EXTORTION.png";
+        case "firearm offense":
+          return "/emoji/FIREARM OFFENSE.png";
+        default:
+          return "/emoji/ASSAULT.png";
       }
     };
 
-    // Function to add significant random offset to coordinates
     const addRandomOffset = (baseCoordinate) => {
-      const cityRadius = 0.1; // Approximately 11km radius
+      const cityRadius = 0.1;
       const angle = Math.random() * 2 * Math.PI;
       const radius = Math.sqrt(Math.random()) * cityRadius;
 
