@@ -1,30 +1,28 @@
-import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
-import {
-  ChatBubble,
-  ChatBubbleAvatar,
-  ChatBubbleMessage,
-} from "@/components/ui/chat/chat-bubble";
+import DisplayCard from "./DisplayCard";
+import { ReportCard } from "./ReportCard";
 import { Button } from "./ui/button";
-import { ChatInput } from "@/components/ui/chat/chat-input";
-import { CornerDownLeft } from "lucide-react";
+import { Label } from "./ui/label";
+
 export default function Chat() {
   return (
     <>
-      <div className="p-10">
-        <ChatMessageList>
-          <ChatBubble>
-            <ChatBubbleAvatar />
-            <ChatBubbleMessage>
-              Message and other content here
-            </ChatBubbleMessage>
-          </ChatBubble>
-        </ChatMessageList>
-        <div className="flex-1" />
-        <ChatInput placeholder="Type your message here..." />
-        <Button size="sm" className="ml-auto gap-1.5">
-          Send Message
-          <CornerDownLeft className="size-3.5" />
-        </Button>
+      <div className="p-10 flex flex-col min-h-screen">
+        <div className="bg-white text-black w-full rounded">
+          <Label className="ml-3">Locality:</Label>
+        </div>
+        <div>
+          <DisplayCard />
+          <DisplayCard />
+        </div>
+        <div className="w-full flex justify-end">
+          <div className="">
+            <DisplayCard />
+          </div>
+        </div>
+        <div className="w-full flex justify-center items-end mt-auto">
+          {/* <Button size="lg" variant="outline">▲</Button> */}
+          <ReportCard label={"▲"}/>
+        </div>
       </div>
     </>
   );
