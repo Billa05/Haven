@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Olamaps from "./OlaMap";
 import Link from "next/link";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 export const Hero38 = () => {
   return (

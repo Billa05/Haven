@@ -50,7 +50,7 @@ export default function Home() {
         </div>
         <div className="p-10">
           <div className="rounded-md aspect-square">
-            {city && <EmojiMap City={city} />}
+            {city && <EmojiMap CityProp={city} />}
           </div>
         </div>
       </div>

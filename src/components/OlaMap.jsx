@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
 import EmojiMap from "./EmojiMap";
+import { Suspense } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Olamaps() {
   const [loc, setLoc] = useState(false);
@@ -66,6 +68,9 @@ export default function Olamaps() {
   return (
     <>
       {loc ? (
+        // <Suspense fallback={<Skeleton className={"w-full h-full md:h-128 lg:h-144 rounded-lg p-4"}/>}>
+        //   <EmojiMap />
+        // </Suspense>
         <EmojiMap />
       ) : (
         <div
