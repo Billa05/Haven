@@ -24,7 +24,7 @@ export const Hero38 = () => {
                   and take proactive measures to ensure your safety.
                 </p>
               </div>
-              <div className="flex flex-row gap-4">
+              <div className="flex gap-4 flex-col md:flex-row">
                 <Link href={"/map"}>
                   <Button size="lg" className="gap-4" variant="outline">
                     Explore Crime Map <Map className="w-4 h-4" />
