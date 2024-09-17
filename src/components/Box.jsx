@@ -7,6 +7,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "./ui/label";
+import { FaRocketchat } from "react-icons/fa6";
+import Link from "next/link";
 
 function BellIcon(props) {
   return (
@@ -77,41 +79,94 @@ export default function Box() {
     <>
       <div className="p-10">
         <Label>Comprehensive Crime Data and Reporting</Label>
-        <div className="grid md:grid-cols-3 gap-8 mt-3">
+        <div className="grid md:grid-cols-4 gap-8 mt-3">
           <Card>
-            <CardHeader>
-              <MapIcon />
-              <CardTitle>Interactive Crime Map</CardTitle>
-            </CardHeader>
+            <Link href={"/map"}>
+              <CardHeader>
+                <MapIcon />
+                <CardTitle>Interactive Crime Map</CardTitle>
+              </CardHeader>
+            </Link>
             <CardContent>
-              <p>
-                Visualize crime data on an interactive map, down to the
-                neighborhood level.
-              </p>
+              <ul className="list-disc pl-5">
+                <li>
+                  Visualize crime data on an interactive map, down to the
+                  neighborhood level.
+                </li>
+                <li>
+                  Use filters to view specific types of crimes and see trends
+                  over time.
+                </li>
+                <li>
+                  Stay aware of the safety of your surroundings with real-time
+                  updates.
+                </li>
+              </ul>
             </CardContent>
           </Card>
+
           <Card>
             <CardHeader>
               <FileTextIcon />
               <CardTitle>Detailed Crime Reports</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                Access comprehensive crime reports and statistics for your city
-                or region.
-              </p>
+              <ul className="list-disc pl-5">
+                <li>
+                  Access comprehensive crime reports and statistics for your
+                  city or region.
+                </li>
+                <li>
+                  Get detailed information on crime types, locations, and times.
+                </li>
+                <li>
+                  Use this data to understand crime patterns and make informed
+                  decisions.
+                </li>
+              </ul>
             </CardContent>
           </Card>
+
           <Card>
             <CardHeader>
               <BellIcon />
               <CardTitle>Crime Alerts</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                Receive timely alerts about criminal incidents in your area to
-                stay informed and safe.
-              </p>
+              <ul className="list-disc pl-5">
+                <li>
+                  Receive timely alerts about criminal incidents in your area to
+                  stay informed and safe.
+                </li>
+                <li>
+                  Customize alert settings to receive notifications for specific
+                  types of crimes.
+                </li>
+                <li>
+                  Stay one step ahead with real-time crime alerts delivered to
+                  your device.
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <FaRocketchat size={25} />
+              <CardTitle>Community Report</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc pl-5">
+                <li>
+                  Stay informed and keep your community safe by reporting any
+                  crime or incidents.
+                </li>
+                <li>Your reports help others stay aware and vigilant.</li>
+                <li>
+                  Together, we can make our neighborhood a safer place for
+                  everyone.
+                </li>
+              </ul>
             </CardContent>
           </Card>
         </div>
