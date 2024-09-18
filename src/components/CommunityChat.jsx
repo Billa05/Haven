@@ -1,29 +1,365 @@
-import DisplayCard from "./DisplayCard";
-import { ReportCard } from "./ReportCard";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
+"use client";
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  MapPin,
+  ThumbsUp,
+  Shield,
+  AlertTriangle,
+  Clock,
+  Loader2,
+} from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-export default function Chat() {
+const crimeTypes = [
+  { value: "theft", label: "Theft", icon: <i className="fas fa-mask" /> },
+  {
+    value: "vandalism",
+    label: "Vandalism",
+    icon: <i className="fas fa-spray-can" />,
+  },
+  {
+    value: "assault",
+    label: "Assault",
+    icon: <i className="fas fa-fist-raised" />,
+  },
+  {
+    value: "burglary",
+    label: "Burglary",
+    icon: <i className="fas fa-door-open" />,
+  },
+  {
+    value: "suspicious_activity",
+    label: "Suspicious Activity",
+    icon: <i className="fas fa-eye" />,
+  },
+  {
+    value: "other",
+    label: "Other",
+    icon: <i className="fas fa-question-circle" />,
+  },
+];
+
+export default function Report() {
+  const [reports, setReports] = useState([
+    {
+      id: 1,
+      title: "Suspicious activity in Central Park",
+      description:
+        "Saw a group of individuals behaving suspiciously near the fountain.",
+      location: "Central Park, New York",
+      date: "2023-06-15",
+      time: "14:30",
+      upvotes: 5,
+      author: "John D.",
+      crimeType: "suspicious_activity",
+    },
+    {
+      id: 2,
+      title: "Car break-in on Main Street",
+      description: "My car window was smashed and some items were stolen.",
+      location: "123 Main St, Anytown",
+      date: "2023-06-14",
+      time: "22:15",
+      upvotes: 8,
+      author: "Sarah M.",
+      crimeType: "theft",
+    },
+  ]);
+
+  const [newReport, setNewReport] = useState({
+    title: "",
+    description: "",
+    location: "",
+    date: new Date(),
+    time: "",
+    crimeType: "",
+  });
+
+  const [userLocation, setUserLocation] = useState("");
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      setIsLoadingLocation(true);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      setUserLocation("123 Main St, Anytown, ST 12345");
+      setIsLoadingLocation(false);
+    };
+
+    getLocation();
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const report = {
+      id: reports.length + 1,
+      ...newReport,
+      date: format(newReport.date, "yyyy-MM-dd"),
+      upvotes: 0,
+      author: "Anonymous",
+    };
+    setReports([report, ...reports]);
+    setNewReport({
+      title: "",
+      description: "",
+      location: "",
+      date: new Date(),
+      time: "",
+      crimeType: "",
+    });
+  };
+
+  const handleUpvote = (id) => {
+    setReports(
+      reports.map((report) =>
+        report.id === id ? { ...report, upvotes: report.upvotes + 1 } : report
+      )
+    );
+  };
+
   return (
-    <>
-      <div className="p-10 flex flex-col min-h-screen">
-        <div className="bg-white text-black w-full rounded">
-          <Label className="ml-3">Locality:</Label>
+    <div className="min-h-screen bg-gradient-to-b  dark:from-gray-900 dark:to-gray-800 text-gray-900">
+      <div className="container mx-auto px-4 py-12">
+        <header className="text-center mb-12 dark:text-black text-white">
+          <h1 className="text-5xl font-bold mb-4">
+            Haven Community Watch
+          </h1>
+          <p className="text-xl max-w-2xl mx-auto">
+            Together, we can make our community safer. Report incidents, stay
+            informed, and help keep our neighborhood secure.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <Card className="bg-white dark:bg-gray-800 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center text-2xl text-gray-800 dark:text-gray-200">
+                <Shield className="mr-2 h-6 w-6 text-primary dark:text-primary-dark" />
+                Submit a Report
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <Input
+                  placeholder="Title"
+                  value={newReport.title}
+                  onChange={(e) =>
+                    setNewReport({ ...newReport, title: e.target.value })
+                  }
+                  required
+                  className="bg-gray-50 dark:bg-gray-700"
+                />
+                <Textarea
+                  placeholder="Description"
+                  value={newReport.description}
+                  onChange={(e) =>
+                    setNewReport({ ...newReport, description: e.target.value })
+                  }
+                  required
+                  className="bg-gray-50 dark:bg-gray-700"
+                />
+                <Input
+                  placeholder="Location"
+                  value={newReport.location}
+                  onChange={(e) =>
+                    setNewReport({ ...newReport, location: e.target.value })
+                  }
+                  required
+                  className="bg-gray-50 dark:bg-gray-700"
+                />
+                <div className="flex space-x-1">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !newReport.date && "text-gray-500 dark:text-gray-400"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {newReport.date ? (
+                          format(newReport.date, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-white dark:bg-gray-800">
+                      <Calendar
+                        mode="single"
+                        selected={newReport.date}
+                        onSelect={(date) =>
+                          setNewReport({
+                            ...newReport,
+                            date: date || new Date(),
+                          })
+                        }
+                        initialFocus
+                        className="bg-white dark:bg-gray-800"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Input
+                    type="time"
+                    value={newReport.time}
+                    onChange={(e) =>
+                      setNewReport({ ...newReport, time: e.target.value })
+                    }
+                    required
+                    className="bg-gray-50 dark:bg-gray-700"
+                  />
+                </div>
+                <Select
+                  value={newReport.crimeType}
+                  onValueChange={(value) =>
+                    setNewReport({ ...newReport, crimeType: value })
+                  }
+                  required
+                >
+                  <SelectTrigger className="bg-gray-50 dark:bg-gray-700">
+                    <SelectValue placeholder="Select crime type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-gray-800">
+                    {crimeTypes.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        <span className="flex items-center">
+                          {type.icon}
+                          <span className="ml-2">{type.label}</span>
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button type="submit" className="w-full">
+                  Submit Report
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white dark:bg-gray-800 shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center text-2xl text-gray-800 dark:text-gray-200">
+                <MapPin className="mr-2 h-6 w-6 text-primary dark:text-primary-dark" />
+                Crime Map
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-5 w-5 text-primary dark:text-primary-dark" />
+                  <span className="font-medium">Your Location:</span>
+                </div>
+                <div className="relative">
+                  <Input
+                    value={userLocation}
+                    readOnly
+                    className="bg-gray-50 dark:bg-gray-700 pr-10"
+                  />
+                  {isLoadingLocation && (
+                    <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-gray-400 dark:text-gray-500" />
+                  )}
+                </div>
+                <div className="aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                  <p className="text-gray-500 dark:text-gray-400">
+                    {isLoadingLocation
+                      ? "Loading map..."
+                      : "Interactive Crime Map Coming Soon"}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        <div>
-          <DisplayCard />
-          <DisplayCard />
-        </div>
-        <div className="w-full flex justify-end">
-          <div className="">
-            <DisplayCard />
-          </div>
-        </div>
-        <div className="w-full flex justify-center items-end mt-auto">
-          {/* <Button size="lg" variant="outline">▲</Button> */}
-          <ReportCard label={"▲"}/>
+
+        <h2 className="text-3xl font-semibold mb-6 text-center dark:text-gray-800 text-gray-200">
+          Recent Reports
+        </h2>
+        <div className="space-y-6">
+          {reports.map((report) => (
+            <Card
+              key={report.id}
+              className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300"
+            >
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between text-gray-800 dark:text-gray-200">
+                  <span>{report.title}</span>
+                  <Badge variant="outline" className="text-sm">
+                    {crimeTypes.find((type) => type.value === report.crimeType)
+                      ?.label || "Unknown"}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="mb-4 text-gray-600 dark:text-gray-400">
+                  {report.description}
+                </p>
+                <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
+                  <div className="flex items-center">
+                    <MapPin className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                    <span>{report.location}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CalendarIcon className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                    <span>{report.date}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Clock className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                    <span>{report.time}</span>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between items-center">
+                <div className="flex items-center space-x-2">
+                  <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
+                    <AvatarFallback>{report.author[0]}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {report.author}
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleUpvote(report.id)}
+                  className="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <ThumbsUp className="mr-1 h-4 w-4" />
+                  Upvote ({report.upvotes})
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

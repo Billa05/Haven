@@ -102,7 +102,7 @@ export default function EmojiMap({ CityProp }) {
 
       const popup = olaMaps.addPopup({ offset: [0, -30], anchor: "bottom" })
         .setHTML(`
-          <div class="bg-black p-2 rounded shadow">
+          <div class="bg-black p-2 rounded shadow dark:bg-white">
             <h3 class="font-bold">${item.crime_description}</h3>
             <p>${item.additional_info || ""}</p>
           </div>

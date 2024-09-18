@@ -7,10 +7,7 @@ export async function CityData(City) {
   try {
     const data = await client.crime.findMany({
       where: {
-        city: City,
-        // crime_description: {
-        //   in: ["VANDALISM", "ARSON", "TRAFFIC VIOLATION", "VEHICLE-STOLEN", "BURGLARY", "SHOPLIFTING", "DOMESTIC VIOLENCE", "SEXUAL ASSAULT"]
-        // }
+        city: City
       },
       take: 100
     });
