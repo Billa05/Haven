@@ -35,3 +35,39 @@ model crime {
   state              String?
   id                 Int     @id @default(autoincrement())
 }
+
+model User {
+  id             Int      @id @default(autoincrement())
+  username       String
+  email          String   @unique
+  name           String
+  givenName      String
+  familyName     String
+  profilePicture String
+  createdAt      DateTime @default(now())
+  reports        Report[]
+}
+
+model Report {
+  id         Int       @id @default(autoincrement())
+  content    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  upvotes    Int       @default(0)
+  downvotes  Int       @default(0)
+  mediaUrl   String?
+  location   Location? @relation(fields: [locationId], references: [id])
+  locationId Int?
+  user       User      @relation(fields: [userId], references: [id])
+  userId     Int
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  city      String
+  state     String
+  country   String
+  latitude  Float
+  longitude Float
+  reports   Report[]
+}
