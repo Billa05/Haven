@@ -176,7 +176,7 @@ export default function EmojiMap({ CityProp }) {
     <>
       <div id="map" className="w-full h-full md:h-128 lg:h-144 rounded-lg p-4">
         {!loaded && (
-          <Skeleton className="w-full h-full md:h-128 lg:h-144 rounded-lg p-4" />
+          <Skeleton className="w-full h-full md:h-128 lg:h-144 rounded-lg p-4 bg-gray-300" />
         )}
       </div>
     </>
