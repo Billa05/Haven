@@ -151,10 +151,12 @@ export default function Box() {
           </Card>
 
           <Card>
-            <CardHeader>
-              <FaRocketchat size={25} />
-              <CardTitle>Community Report</CardTitle>
-            </CardHeader>
+            <Link href={"/Community"}>
+              <CardHeader>
+                <FaRocketchat size={25} />
+                <CardTitle>Community Report</CardTitle>
+              </CardHeader>
+            </Link>
             <CardContent>
               <ul className="list-disc pl-5">
                 <li>

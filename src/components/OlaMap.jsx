@@ -68,9 +68,6 @@ export default function Olamaps() {
   return (
     <>
       {loc ? (
-        // <Suspense fallback={<Skeleton className={"w-full h-full md:h-128 lg:h-144 rounded-lg p-4"}/>}>
-        //   <EmojiMap />
-        // </Suspense>
         <EmojiMap />
       ) : (
         <div

@@ -24,6 +24,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const subMenuItemsOne = [
   {
@@ -155,7 +156,9 @@ const Navbar1 = () => {
             </div>
           </div>
           <div className="flex gap-2">
+            <Link href={"/api/auth/signin"}>
             <Button variant={'outline'}>Log in</Button>
+            </Link>
             <Button>Sign up</Button>
           </div>
         </nav>
