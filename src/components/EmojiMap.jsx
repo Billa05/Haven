@@ -4,7 +4,21 @@ import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
 import { Skeleton } from "./ui/skeleton";
 
-export default function EmojiMap({ CityProp }) {
+export async function fetchCityName(lat, lon){
+  try {
+    const response = await fetch(
+      `https://api.olamaps.io/places/v1/reverse-geocode?latlng=${lat},${lon}&api_key=${process.env.NEXT_PUBLIC_MY_OLA_API_KEY}`
+    );
+    const data = await response.json();
+    const extracted_city = data.results[0].address_components[4].long_name;
+    return extracted_city;
+  } catch (error) {
+    console.error("Error fetching city name:", error);
+    return null;
+  }
+};
+
+export function EmojiMap({ CityProp }) {
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -26,20 +40,6 @@ export default function EmojiMap({ CityProp }) {
           }
         );
       });
-    };
-
-    const fetchCityName = async (lat, lon) => {
-      try {
-        const response = await fetch(
-          `https://api.olamaps.io/places/v1/reverse-geocode?latlng=${lat},${lon}&api_key=${process.env.NEXT_PUBLIC_MY_OLA_API_KEY}`
-        );
-        const data = await response.json();
-        const extracted_city = data.results[0].address_components[4].long_name;
-        return extracted_city;
-      } catch (error) {
-        console.error("Error fetching city name:", error);
-        return null;
-      }
     };
 
     const initializeMap = async () => {

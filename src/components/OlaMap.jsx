@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
-import EmojiMap from "./EmojiMap";
+import {EmojiMap} from "./EmojiMap";
 import { Suspense } from "react";
 import { Skeleton } from "./ui/skeleton";
 

@@ -36,6 +36,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {ReportMap} from "./ReportMap";
 
 const crimeTypes = [
   { value: "theft", label: "Theft", icon: <i className="fas fa-mask" /> },
@@ -148,9 +149,7 @@ export default function Report() {
     <div className="min-h-screen bg-gradient-to-b  dark:from-gray-900 dark:to-gray-800 text-gray-900">
       <div className="container mx-auto px-4 py-12">
         <header className="text-center mb-12 dark:text-black text-white">
-          <h1 className="text-5xl font-bold mb-4">
-            Haven Community Watch
-          </h1>
+          <h1 className="text-5xl font-bold mb-4">Haven Community Watch</h1>
           <p className="text-xl max-w-2xl mx-auto">
             Together, we can make our community safer. Report incidents, stay
             informed, and help keep our neighborhood secure.
@@ -265,39 +264,7 @@ export default function Report() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white dark:bg-gray-800 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center text-2xl text-gray-800 dark:text-gray-200">
-                <MapPin className="mr-2 h-6 w-6 text-primary dark:text-primary-dark" />
-                Crime Map
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <MapPin className="h-5 w-5 text-primary dark:text-primary-dark" />
-                  <span className="font-medium">Your Location:</span>
-                </div>
-                <div className="relative">
-                  <Input
-                    value={userLocation}
-                    readOnly
-                    className="bg-gray-50 dark:bg-gray-700 pr-10"
-                  />
-                  {isLoadingLocation && (
-                    <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-gray-400 dark:text-gray-500" />
-                  )}
-                </div>
-                <div className="aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                  <p className="text-gray-500 dark:text-gray-400">
-                    {isLoadingLocation
-                      ? "Loading map..."
-                      : "Interactive Crime Map Coming Soon"}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ReportMap/>
         </div>
 
         <h2 className="text-3xl font-semibold mb-6 text-center dark:text-gray-800 text-gray-200">
