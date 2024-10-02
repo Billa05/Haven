@@ -90,9 +90,9 @@ export default function Report() {
   const { city } = useContext(CityContext);
   const [reports, setReports] = useState([]);
   const { landmark, location } = useContext(LocationContext);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [create, setCreate] = useState(false);
-  const [voted,setVoted] = useState(false);
+  const [voted, setVoted] = useState(false);
 
   useEffect(() => {
     const fetchReportsAsync = async () => {
@@ -111,9 +111,13 @@ export default function Report() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (status !== "authenticated") {
+      alert("You must be logged in to submit a report.");
+      return;
+    }
     const report = {
       ...newReport,
-      date: format(newReport.date, "yyyy-MM-dd"),
+      date: newReport.date ? format(newReport.date, "yyyy-MM-dd") : "",
       upvotes: 0,
       author: session.user.name,
       city: city,
@@ -132,9 +136,17 @@ export default function Report() {
   };
 
   const handleUpvote = async (reportid) => {
+    if (status !== "authenticated") {
+      alert("You must be logged in to upvote.");
+      return;
+    }
     const res = await updateVote(reportid, session.user.email);
     if (res == 1) setVoted(true);
   };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b  dark:from-gray-900 dark:to-gray-800 text-gray-900">
@@ -259,64 +271,73 @@ export default function Report() {
           Recent Reports
         </h2>
         <div className="space-y-6 text-white">
-          {reports
-            ? reports.map((report) => (
-                <Card
-                  key={report.id}
-                  className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                >
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between text-gray-800 dark:text-gray-200">
-                      <span>{report.title}</span>
-                      <Badge variant="outline" className="text-sm">
-                        {crimeTypes.find(
-                          (type) => type.value === report.crimeType
-                        )?.label || "Unknown"}
-                      </Badge>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="mb-4 text-gray-600 dark:text-gray-400">
-                      {report.description}
-                    </p>
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
-                      <div className="flex items-center">
-                        <MapPin className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
-                        <span>{report.location}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <CalendarIcon className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
-                        <span>{report.date}</span>
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
-                        <span>{report.time}</span>
-                      </div>
+          {reports && reports.length > 0 ? (
+            reports.map((report) => (
+              <Card
+                key={report.id}
+                className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between text-gray-800 dark:text-gray-200">
+                    <span>{report.title}</span>
+                    <Badge variant="outline" className="text-sm">
+                      {crimeTypes.find(
+                        (type) => type.value === report.crimeType
+                      )?.label || "Unknown"}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="mb-4 text-gray-600 dark:text-gray-400">
+                    {report.description}
+                  </p>
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center">
+                      <MapPin className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                      <span>{report.location}</span>
                     </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
-                      <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
-                        {/* <AvatarFallback>{report.author[0]}</AvatarFallback> */}
-                        <img src={session.user ? session.user.image : ""}></img>
-                      </Avatar>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {report.author}
-                      </span>
+                    <div className="flex items-center">
+                      <CalendarIcon className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                      <span>{report.date}</span>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleUpvote(report.id)}
-                      className="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <ThumbsUp className="mr-1 h-4 w-4" />
-                      Upvote ({report.upvotes})
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))
-            : "no reports yet"}
+                    <div className="flex items-center">
+                      <Clock className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                      <span>{report.time}</span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2">
+                    <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
+                      <AvatarFallback>{report.author[0]}</AvatarFallback>
+                      {session && session.user && session.user.image && (
+                        <AvatarImage
+                          src={session.user.image}
+                          alt={report.author}
+                        />
+                      )}
+                    </Avatar>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {report.author}
+                    </span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleUpvote(report.id)}
+                    className="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <ThumbsUp className="mr-1 h-4 w-4" />
+                    Upvote ({report.upvotes})
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 dark:text-gray-400">
+              No reports yet
+            </p>
+          )}
         </div>
       </div>
     </div>
