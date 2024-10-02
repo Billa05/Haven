@@ -9,6 +9,9 @@ import { Input } from "./ui/input";
 import { Skeleton } from "./ui/skeleton";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { MapPin } from "lucide-react";
+import { LocationContext } from "./LocationContext";
+import { useContext } from "react";
+import { CityContext, CityProvider } from "./CityContext";
 
 export async function AutoCompleteApi(city, input) {
   try {
@@ -29,13 +32,28 @@ export async function AutoCompleteApi(city, input) {
   }
 }
 
+export async function fetchlandmark(lat, lon) {
+  try {
+    const response = await fetch(
+      `https://api.olamaps.io/places/v1/reverse-geocode?latlng=${lat},${lon}&api_key=${process.env.NEXT_PUBLIC_MY_OLA_API_KEY}`
+    );
+    const data = await response.json();
+    const extracted_landmark = data.results[0].formatted_address;
+    return extracted_landmark;
+  } catch (error) {
+    console.error("Error fetching city name:", error);
+    return null;
+  }
+}
+
 export function ReportMap() {
-  const [location, setLocation] = useState({ latitude: null, longitude: null });
+  const {location, setLocation} = useContext(LocationContext);
+  const {landmark, setLandmark} = useContext(LocationContext);
   const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState(null);
   const [input, setInput] = useState("");
   const [debouncedInput] = useDebounce(input, 300);
-  const [city, setCity] = useState(null);
+  const {city, setCity} = useContext(CityContext);
   const [sugg, setSugg] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -141,6 +159,17 @@ export function ReportMap() {
     fetchSuggestions();
   }, [debouncedInput, city]);
 
+  useEffect(() => {
+    const fetchLandmarkData = async () => {
+      const res = await fetchlandmark(location.latitude, location.longitude);
+      setLandmark(res);
+    };
+
+    if (location.latitude && location.longitude) {
+      fetchLandmarkData();
+    }
+  }, [location]);
+
   function handleSelectSuggestion(suggestion) {
     setSugg([]);
     setInput("");
@@ -197,6 +226,9 @@ export function ReportMap() {
                 Loading...
               </div>
             )}
+            <p className="text-gray-500">
+              Drag the marker to the closest location of the incident
+            </p>
             {sugg.length > 0 && (
               <ul className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
                 {sugg.map((suggestion) => (

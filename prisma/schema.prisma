@@ -37,51 +37,55 @@ model crime {
 }
 
 model Report {
-  id         String   @id @default(cuid())
-  title      String
-  type       String
-  content    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  upvotes    Int      @default(0)
-  downvotes  Int      @default(0)
-  mediaUrl   String?
-  location   Location @relation(fields: [locationId], references: [id])
-  locationId String
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
+  id          String   @id @default(cuid())
+  title       String
+  crimeType   String
+  author      String
+  description String
+  location    String
+  city        String
+  date        String
+  time        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  upvotes     Int      @default(0)
+  downvotes   Int      @default(0)
+  // mediaUrl   String?
+  // location   Location @relation(fields: [locationId], references: [id])
+  // locationId String
+  // userId     String
+  // user       User     @relation(fields: [userId], references: [id])
 }
 
 model Location {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   city      String
-  state     String
-  country   String
+  state     String?
+  country   String?
   latitude  Float
   longitude Float
-  reports   Report[]
+  // reports   Report[]
 }
 
 model Account {
-  id                 String    @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?      // Note: Next-Auth typically uses Int for Unix timestamps
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id])
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int? // Note: Next-Auth typically uses Int for Unix timestamps
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId], name: "provider_providerAccountId")
 }
-
 
 model Session {
   id           String   @id @default(cuid())
@@ -104,7 +108,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
-  reports       Report[]
+  // reports       Report[]
 }
 
 model VerificationRequest {

@@ -36,7 +36,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {ReportMap} from "./ReportMap";
+import { ReportMap } from "./ReportMap";
+import {
+  CreateLocation,
+  CreateReport,
+  fetchReports,
+  FindLocation,
+} from "@/app/actions/Report";
+import { CityContext, CityProvider } from "./CityContext";
+import { useContext } from "react";
+import { LocationContext, LocationProvider } from "./LocationContext";
+import { useSession } from "next-auth/react";
 
 const crimeTypes = [
   { value: "theft", label: "Theft", icon: <i className="fas fa-mask" /> },
@@ -68,31 +78,6 @@ const crimeTypes = [
 ];
 
 export default function Report() {
-  const [reports, setReports] = useState([
-    {
-      id: 1,
-      title: "Suspicious activity in Central Park",
-      description:
-        "Saw a group of individuals behaving suspiciously near the fountain.",
-      location: "Central Park, New York",
-      date: "2023-06-15",
-      time: "14:30",
-      upvotes: 5,
-      author: "John D.",
-      crimeType: "suspicious_activity",
-    },
-    {
-      id: 2,
-      title: "Car break-in on Main Street",
-      description: "My car window was smashed and some items were stolen.",
-      location: "123 Main St, Anytown",
-      date: "2023-06-14",
-      time: "22:15",
-      upvotes: 8,
-      author: "Sarah M.",
-      crimeType: "theft",
-    },
-  ]);
 
   const [newReport, setNewReport] = useState({
     title: "",
@@ -102,31 +87,40 @@ export default function Report() {
     time: "",
     crimeType: "",
   });
+  const { city } = useContext(CityContext);
+  const [reports, setReports] = useState([]);
+  const { landmark, location } = useContext(LocationContext);
+  const { data: session } = useSession();
+  const [create,setCreate] = useState(false);
 
-  const [userLocation, setUserLocation] = useState("");
-  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
 
   useEffect(() => {
-    const getLocation = async () => {
-      setIsLoadingLocation(true);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setUserLocation("123 Main St, Anytown, ST 12345");
-      setIsLoadingLocation(false);
+    const fetchReportsAsync = async () => {
+      try {
+        if (city) {
+          const res = await fetchReports(city);
+          setReports(res);
+        }
+      } catch (error) {
+        console.error("Failed to fetch reports:", error);
+      }
     };
 
-    getLocation();
-  }, []);
+    fetchReportsAsync();
+  }, [city,create]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const report = {
-      id: reports.length + 1,
       ...newReport,
       date: format(newReport.date, "yyyy-MM-dd"),
       upvotes: 0,
-      author: "Anonymous",
+      author: session.user.name,
+      city: city,
+      location:landmark
     };
-    setReports([report, ...reports]);
+    CreateReport(report);
+    setCreate(true);
     setNewReport({
       title: "",
       description: "",
@@ -184,13 +178,10 @@ export default function Report() {
                   required
                   className="bg-gray-50 dark:bg-gray-700"
                 />
-                <Input
+                <Textarea
                   placeholder="Location"
-                  value={newReport.location}
-                  onChange={(e) =>
-                    setNewReport({ ...newReport, location: e.target.value })
-                  }
-                  required
+                  value={landmark? landmark:"" }
+                  readOnly
                   className="bg-gray-50 dark:bg-gray-700"
                 />
                 <div className="flex space-x-1">
@@ -264,67 +255,70 @@ export default function Report() {
             </CardContent>
           </Card>
 
-          <ReportMap/>
+          <ReportMap />
         </div>
 
         <h2 className="text-3xl font-semibold mb-6 text-center dark:text-gray-800 text-gray-200">
           Recent Reports
         </h2>
-        <div className="space-y-6">
-          {reports.map((report) => (
-            <Card
-              key={report.id}
-              className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between text-gray-800 dark:text-gray-200">
-                  <span>{report.title}</span>
-                  <Badge variant="outline" className="text-sm">
-                    {crimeTypes.find((type) => type.value === report.crimeType)
-                      ?.label || "Unknown"}
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="mb-4 text-gray-600 dark:text-gray-400">
-                  {report.description}
-                </p>
-                <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
-                  <div className="flex items-center">
-                    <MapPin className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
-                    <span>{report.location}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <CalendarIcon className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
-                    <span>{report.date}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
-                    <span>{report.time}</span>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
-                    <AvatarFallback>{report.author[0]}</AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {report.author}
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleUpvote(report.id)}
-                  className="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+        <div className="space-y-6 text-white">
+          {reports
+            ? reports.map((report) => (
+                <Card
+                  key={report.id}
+                  className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300"
                 >
-                  <ThumbsUp className="mr-1 h-4 w-4" />
-                  Upvote ({report.upvotes})
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between text-gray-800 dark:text-gray-200">
+                      <span>{report.title}</span>
+                      <Badge variant="outline" className="text-sm">
+                        {crimeTypes.find(
+                          (type) => type.value === report.crimeType
+                        )?.label || "Unknown"}
+                      </Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-4 text-gray-600 dark:text-gray-400">
+                      {report.description}
+                    </p>
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center">
+                        <MapPin className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                        <span>{report.location}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <CalendarIcon className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                        <span>{report.date}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="mr-1 h-4 w-4 text-primary dark:text-primary-dark" />
+                        <span>{report.time}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-between items-center">
+                    <div className="flex items-center space-x-2">
+                      <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
+                        <AvatarFallback>{report.author[0]}</AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {report.author}
+                      </span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleUpvote(report.id)}
+                      className="text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <ThumbsUp className="mr-1 h-4 w-4" />
+                      Upvote ({report.upvotes})
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))
+            : "no reports yet"}
         </div>
       </div>
     </div>

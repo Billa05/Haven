@@ -3,8 +3,10 @@ import { CityData } from "@/app/actions/CItyMapData";
 import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
 import { Skeleton } from "./ui/skeleton";
+import { CityContext, CityProvider } from "./CityContext";
+import { useContext } from "react";
 
-export async function fetchCityName(lat, lon){
+export async function fetchCityName(lat, lon) {
   try {
     const response = await fetch(
       `https://api.olamaps.io/places/v1/reverse-geocode?latlng=${lat},${lon}&api_key=${process.env.NEXT_PUBLIC_MY_OLA_API_KEY}`
@@ -16,13 +18,14 @@ export async function fetchCityName(lat, lon){
     console.error("Error fetching city name:", error);
     return null;
   }
-};
+}
 
 export function EmojiMap({ CityProp }) {
   const [lat, setLat] = useState(null);
   const [long, setLong] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState(null);
+  const {city,setCity} = useContext(CityContext);
 
   useEffect(() => {
     const getUserLocation = () => {
@@ -47,6 +50,7 @@ export function EmojiMap({ CityProp }) {
       if (!CityProp) {
         const { latitude, longitude } = await getUserLocation();
         const detectedCity = await fetchCityName(latitude, longitude);
+        setCity(detectedCity);
         cityData = await CityData(detectedCity);
       } else {
         cityData = await CityData(CityProp);
