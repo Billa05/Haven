@@ -298,7 +298,7 @@ export default function Report() {
                     <div className="flex items-center space-x-2">
                       <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
                         {/* <AvatarFallback>{report.author[0]}</AvatarFallback> */}
-                        <img src={session.user.image}></img>
+                        <img src={session.user ? session.user.image : ""}></img>
                       </Avatar>
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         {report.author}
