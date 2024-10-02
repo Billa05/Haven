@@ -83,7 +83,7 @@ export default function Report() {
     title: "",
     description: "",
     location: "",
-    date: new Date(),
+    date: "",
     time: "",
     crimeType: "",
   });
@@ -125,7 +125,7 @@ export default function Report() {
       title: "",
       description: "",
       location: "",
-      date: new Date(),
+      date: "",
       time: "",
       crimeType: "",
     });
@@ -206,7 +206,7 @@ export default function Report() {
                         onSelect={(date) =>
                           setNewReport({
                             ...newReport,
-                            date: date || new Date(),
+                            date: date,
                           })
                         }
                         initialFocus
