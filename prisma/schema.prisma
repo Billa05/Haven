@@ -36,26 +36,7 @@ model crime {
   id                 Int     @id @default(autoincrement())
 }
 
-model Report {
-  id          String   @id @default(cuid())
-  title       String
-  crimeType   String
-  author      String
-  description String
-  location    String
-  city        String
-  date        String
-  time        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  upvotes     Int      @default(0)
-  downvotes   Int      @default(0)
-  // mediaUrl   String?
-  // location   Location @relation(fields: [locationId], references: [id])
-  // locationId String
-  // userId     String
-  // user       User     @relation(fields: [userId], references: [id])
-}
+
 
 model Location {
   id        String  @id @default(cuid())
@@ -98,6 +79,28 @@ model Session {
   user         User     @relation(fields: [userId], references: [id])
 }
 
+model Report {
+  id          String   @id @default(cuid())
+  title       String
+  crimeType   String
+  author      String
+  description String
+  location    String
+  city        String
+  date        String
+  time        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  upvotes     Int      @default(0)
+  downvotes   Int      @default(0)
+  // mediaUrl   String?
+  // location   Location @relation(fields: [locationId], references: [id])
+  // locationId String
+  // userId     String
+  // user       User     @relation(fields: [userId], references: [id])
+  votes       Vote[]
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -108,7 +111,18 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  votes         Vote[]
   // reports       Report[]
+}
+
+model Vote {
+  id       String @id @default(cuid())
+  emailId  String
+  reportId String
+  user     User   @relation(fields: [emailId], references: [email])
+  report   Report @relation(fields: [reportId], references: [id])
+
+  @@unique([emailId, reportId])
 }
 
 model VerificationRequest {

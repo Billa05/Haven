@@ -42,6 +42,7 @@ import {
   CreateReport,
   fetchReports,
   FindLocation,
+  updateVote,
 } from "@/app/actions/Report";
 import { CityContext, CityProvider } from "./CityContext";
 import { useContext } from "react";
@@ -78,7 +79,6 @@ const crimeTypes = [
 ];
 
 export default function Report() {
-
   const [newReport, setNewReport] = useState({
     title: "",
     description: "",
@@ -91,8 +91,8 @@ export default function Report() {
   const [reports, setReports] = useState([]);
   const { landmark, location } = useContext(LocationContext);
   const { data: session } = useSession();
-  const [create,setCreate] = useState(false);
-
+  const [create, setCreate] = useState(false);
+  const [voted,setVoted] = useState(false);
 
   useEffect(() => {
     const fetchReportsAsync = async () => {
@@ -107,7 +107,7 @@ export default function Report() {
     };
 
     fetchReportsAsync();
-  }, [city,create]);
+  }, [city, create, voted]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -117,7 +117,7 @@ export default function Report() {
       upvotes: 0,
       author: session.user.name,
       city: city,
-      location:landmark
+      location: landmark,
     };
     CreateReport(report);
     setCreate(true);
@@ -131,12 +131,9 @@ export default function Report() {
     });
   };
 
-  const handleUpvote = (id) => {
-    setReports(
-      reports.map((report) =>
-        report.id === id ? { ...report, upvotes: report.upvotes + 1 } : report
-      )
-    );
+  const handleUpvote = async (reportid) => {
+    const res = await updateVote(reportid, session.user.email);
+    if (res == 1) setVoted(true);
   };
 
   return (
@@ -180,7 +177,7 @@ export default function Report() {
                 />
                 <Textarea
                   placeholder="Location"
-                  value={landmark? landmark:"" }
+                  value={landmark ? landmark : ""}
                   readOnly
                   className="bg-gray-50 dark:bg-gray-700"
                 />
@@ -300,7 +297,8 @@ export default function Report() {
                   <CardFooter className="flex justify-between items-center">
                     <div className="flex items-center space-x-2">
                       <Avatar className="h-8 w-8 bg-primary text-primary-foreground dark:bg-primary-dark dark:text-primary-dark-foreground">
-                        <AvatarFallback>{report.author[0]}</AvatarFallback>
+                        {/* <AvatarFallback>{report.author[0]}</AvatarFallback> */}
+                        <img src={session.user.image}></img>
                       </Avatar>
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         {report.author}
