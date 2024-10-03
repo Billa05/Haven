@@ -79,7 +79,7 @@ export default function Box() {
     <>
       <div className="p-10">
         <Label>Comprehensive Crime Data and Reporting</Label>
-        <div className="grid md:grid-cols-4 gap-8 mt-3">
+        <div className="grid md:grid-cols-3 gap-8 mt-3">
           <Card>
             <Link href={"/map"}>
               <CardHeader>
@@ -105,7 +105,7 @@ export default function Box() {
             </CardContent>
           </Card>
 
-          <Card>
+          {/* <Card>
             <CardHeader>
               <FileTextIcon />
               <CardTitle>Detailed Crime Reports</CardTitle>
@@ -125,7 +125,7 @@ export default function Box() {
                 </li>
               </ul>
             </CardContent>
-          </Card>
+          </Card> */}
 
           <Card>
             <CardHeader>
