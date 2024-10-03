@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <CityProvider>
-        <Navbar1 />
+        {/* <Navbar1 /> */}
         <Hero38 />
         <Box />
         {/* <TweetCarousel/> */}

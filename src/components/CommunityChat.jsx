@@ -44,10 +44,19 @@ import {
   FindLocation,
   updateVote,
 } from "@/app/actions/Report";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { CityContext, CityProvider } from "./CityContext";
 import { useContext } from "react";
 import { LocationContext, LocationProvider } from "./LocationContext";
 import { useSession } from "next-auth/react";
+import { handelSignin } from "./Navbar";
 
 const crimeTypes = [
   { value: "theft", label: "Theft", icon: <i className="fas fa-mask" /> },
@@ -93,6 +102,7 @@ export default function Report() {
   const { data: session, status } = useSession();
   const [create, setCreate] = useState(false);
   const [voted, setVoted] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchReportsAsync = async () => {
@@ -112,7 +122,7 @@ export default function Report() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (status !== "authenticated") {
-      alert("You must be logged in to submit a report.");
+      setIsSignInModalOpen(true);
       return;
     }
     const report = {
@@ -134,6 +144,11 @@ export default function Report() {
       crimeType: "",
     });
   };
+
+  const handelmodalSignin = ()=>{
+    handelSignin();
+    setIsSignInModalOpen(false);
+  }
 
   const handleUpvote = async (reportid) => {
     if (status !== "authenticated") {
@@ -334,6 +349,17 @@ export default function Report() {
           )}
         </div>
       </div>
+      <Dialog open={isSignInModalOpen} onOpenChange={setIsSignInModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Sign In Required</DialogTitle>
+            <DialogDescription>
+              You must be signed in to perform this action.
+            </DialogDescription>
+          </DialogHeader>
+          <Button onClick={() => handelmodalSignin()}>Sign In</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

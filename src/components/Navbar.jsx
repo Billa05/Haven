@@ -1,12 +1,13 @@
-import { Book, Menu, Sunset, Trees, Zap } from 'lucide-react';
+"use client";
+import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Button, buttonVariants } from '@/components/ui/button';
+} from "@/components/ui/accordion";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,59 +16,70 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu';
+} from "@/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const subMenuItemsOne = [
   {
-    title: 'Crime Map',
-    description: 'The latest industry news, updates, and info',
+    title: "Crime Map",
+    description: "The latest industry news, updates, and info",
     icon: <Book className="size-5 shrink-0" />,
   },
   {
-    title: 'Crime Reports',
-    description: 'Our mission is to innovate and empower the world',
+    title: "Crime Reports",
+    description: "Our mission is to innovate and empower the world",
     icon: <Trees className="size-5 shrink-0" />,
   },
   {
-    title: 'Community',
-    description: 'Browse job listing and discover our workspace',
+    title: "Community",
+    description: "Browse job listing and discover our workspace",
     icon: <Sunset className="size-5 shrink-0" />,
-  }
+  },
 ];
 
 const subMenuItemsTwo = [
   {
-    title: 'Help Center',
-    description: 'Get all the answers you need right here',
+    title: "Help Center",
+    description: "Get all the answers you need right here",
     icon: <Zap className="size-5 shrink-0" />,
   },
   {
-    title: 'Contact Us',
-    description: 'We are here to help you with any questions you have',
+    title: "Contact Us",
+    description: "We are here to help you with any questions you have",
     icon: <Sunset className="size-5 shrink-0" />,
   },
   {
-    title: 'Status',
-    description: 'Check the current status of our services and APIs',
+    title: "Status",
+    description: "Check the current status of our services and APIs",
     icon: <Trees className="size-5 shrink-0" />,
   },
   {
-    title: 'Terms of Service',
-    description: 'Our terms and conditions for using our services',
+    title: "Terms of Service",
+    description: "Our terms and conditions for using our services",
     icon: <Book className="size-5 shrink-0" />,
   },
 ];
 
-const Navbar1 = () => {
+export const handelSignin = () => {
+  signIn("google");
+};
+
+export const Navbar1 = () => {
+  const { data: session, status } = useSession();
+
+  const handelSignout = () => {
+    signOut("google");
+  };
   return (
     <section className="p-2 mx-10">
       <div className="">
@@ -79,11 +91,11 @@ const Navbar1 = () => {
             <div className="flex items-center">
               <a
                 className={cn(
-                  'text-muted-foreground',
+                  "text-muted-foreground",
                   navigationMenuTriggerStyle,
                   buttonVariants({
-                    variant: 'ghost',
-                  }),
+                    variant: "ghost",
+                  })
                 )}
                 href="#"
               >
@@ -102,7 +114,7 @@ const Navbar1 = () => {
                             <li key={idx}>
                               <a
                                 className={cn(
-                                  'flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+                                  "flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                 )}
                                 href="#"
                               >
@@ -131,7 +143,7 @@ const Navbar1 = () => {
                             <li key={idx}>
                               <a
                                 className={cn(
-                                  'flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+                                  "flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                 )}
                                 href="#"
                               >
@@ -156,10 +168,15 @@ const Navbar1 = () => {
             </div>
           </div>
           <div className="flex gap-2">
-            <Link href={"/api/auth/signin"}>
-            <Button variant={'outline'}>Log in</Button>
-            </Link>
-            <Button>Sign up</Button>
+            {session && session.user ? (
+              <Button variant="outline" onClick={handelSignout}>
+                Log out
+              </Button>
+            ) : (
+              <Button variant="outline" onClick={handelSignin}>
+                Log in
+              </Button>
+            )}
           </div>
         </nav>
         <div className="block lg:hidden">
@@ -169,7 +186,7 @@ const Navbar1 = () => {
             </div>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant={'outline'} size={'icon'}>
+                <Button variant={"outline"} size={"icon"}>
                   <Menu className="size-4" />
                 </Button>
               </SheetTrigger>
@@ -195,7 +212,7 @@ const Navbar1 = () => {
                           <a
                             key={idx}
                             className={cn(
-                              'flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+                              "flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                             )}
                             href="#"
                           >
@@ -221,7 +238,7 @@ const Navbar1 = () => {
                           <a
                             key={idx}
                             className={cn(
-                              'flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+                              "flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                             )}
                             href="#"
                           >
@@ -251,9 +268,9 @@ const Navbar1 = () => {
                     <a
                       className={cn(
                         buttonVariants({
-                          variant: 'ghost',
+                          variant: "ghost",
                         }),
-                        'justify-start text-muted-foreground',
+                        "justify-start text-muted-foreground"
                       )}
                       href="#"
                     >
@@ -262,9 +279,9 @@ const Navbar1 = () => {
                     <a
                       className={cn(
                         buttonVariants({
-                          variant: 'ghost',
+                          variant: "ghost",
                         }),
-                        'justify-start text-muted-foreground',
+                        "justify-start text-muted-foreground"
                       )}
                       href="#"
                     >
@@ -273,9 +290,9 @@ const Navbar1 = () => {
                     <a
                       className={cn(
                         buttonVariants({
-                          variant: 'ghost',
+                          variant: "ghost",
                         }),
-                        'justify-start text-muted-foreground',
+                        "justify-start text-muted-foreground"
                       )}
                       href="#"
                     >
@@ -284,9 +301,9 @@ const Navbar1 = () => {
                     <a
                       className={cn(
                         buttonVariants({
-                          variant: 'ghost',
+                          variant: "ghost",
                         }),
-                        'justify-start text-muted-foreground',
+                        "justify-start text-muted-foreground"
                       )}
                       href="#"
                     >
@@ -295,9 +312,9 @@ const Navbar1 = () => {
                     <a
                       className={cn(
                         buttonVariants({
-                          variant: 'ghost',
+                          variant: "ghost",
                         }),
-                        'justify-start text-muted-foreground',
+                        "justify-start text-muted-foreground"
                       )}
                       href="#"
                     >
@@ -306,9 +323,9 @@ const Navbar1 = () => {
                     <a
                       className={cn(
                         buttonVariants({
-                          variant: 'ghost',
+                          variant: "ghost",
                         }),
-                        'justify-start text-muted-foreground',
+                        "justify-start text-muted-foreground"
                       )}
                       href="#"
                     >
@@ -316,7 +333,7 @@ const Navbar1 = () => {
                     </a>
                   </div>
                   <div className="mt-2 flex flex-col gap-3">
-                    <Button variant={'outline'}>Log in</Button>
+                    <Button variant={"outline"}>Log in</Button>
                     <Button>Sign up</Button>
                   </div>
                 </div>
@@ -328,5 +345,3 @@ const Navbar1 = () => {
     </section>
   );
 };
-
-export default Navbar1;
