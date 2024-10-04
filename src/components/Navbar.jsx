@@ -32,18 +32,21 @@ import { useSession } from "next-auth/react";
 const subMenuItemsOne = [
   {
     title: "Crime Map",
-    description: "The latest industry news, updates, and info",
+    description: "Visualize crime data on an interactive map",
     icon: <Book className="size-5 shrink-0" />,
+    link: "/map",
   },
   {
-    title: "Crime Reports",
-    description: "Our mission is to innovate and empower the world",
+    title: "Crime Alerts",
+    description: "Receive timely alerts about incidents in your area",
     icon: <Trees className="size-5 shrink-0" />,
+    link: "/#tweets",
   },
   {
     title: "Community",
-    description: "Browse job listing and discover our workspace",
+    description: "Your reports help others stay aware and vigilant.",
     icon: <Sunset className="size-5 shrink-0" />,
+    link: "/Community",
   },
 ];
 
@@ -57,11 +60,6 @@ const subMenuItemsTwo = [
     title: "Contact Us",
     description: "We are here to help you with any questions you have",
     icon: <Sunset className="size-5 shrink-0" />,
-  },
-  {
-    title: "Status",
-    description: "Check the current status of our services and APIs",
-    icon: <Trees className="size-5 shrink-0" />,
   },
   {
     title: "Terms of Service",
@@ -81,7 +79,7 @@ export const Navbar1 = () => {
     signOut("google");
   };
   return (
-    <section className="p-2 mx-10">
+    <section className="p-2 mx-10 z-10 relative">
       <div className="">
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
@@ -97,7 +95,7 @@ export const Navbar1 = () => {
                     variant: "ghost",
                   })
                 )}
-                href="#"
+                href="/"
               >
                 Home
               </a>
@@ -116,7 +114,7 @@ export const Navbar1 = () => {
                                 className={cn(
                                   "flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                 )}
-                                href="#"
+                                href={item.link}
                               >
                                 {item.icon}
                                 <div>
@@ -256,12 +254,6 @@ export const Navbar1 = () => {
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
-                  <a href="#" className="font-semibold">
-                    Pricing
-                  </a>
-                  <a href="#" className="font-semibold">
-                    Blog
-                  </a>
                 </div>
                 <div className="border-t pt-4">
                   <div className="grid grid-cols-2 justify-start">
@@ -274,41 +266,9 @@ export const Navbar1 = () => {
                       )}
                       href="#"
                     >
-                      Press
-                    </a>
-                    <a
-                      className={cn(
-                        buttonVariants({
-                          variant: "ghost",
-                        }),
-                        "justify-start text-muted-foreground"
-                      )}
-                      href="#"
-                    >
                       Contact
                     </a>
-                    <a
-                      className={cn(
-                        buttonVariants({
-                          variant: "ghost",
-                        }),
-                        "justify-start text-muted-foreground"
-                      )}
-                      href="#"
-                    >
-                      Imprint
-                    </a>
-                    <a
-                      className={cn(
-                        buttonVariants({
-                          variant: "ghost",
-                        }),
-                        "justify-start text-muted-foreground"
-                      )}
-                      href="#"
-                    >
-                      Sitemap
-                    </a>
+
                     <a
                       className={cn(
                         buttonVariants({
@@ -333,8 +293,15 @@ export const Navbar1 = () => {
                     </a>
                   </div>
                   <div className="mt-2 flex flex-col gap-3">
-                    <Button variant={"outline"}>Log in</Button>
-                    <Button>Sign up</Button>
+                    {session && session.user ? (
+                      <Button variant="outline" onClick={handelSignout}>
+                        Log out
+                      </Button>
+                    ) : (
+                      <Button variant="outline" onClick={handelSignin}>
+                        Log in
+                      </Button>
+                    )}
                   </div>
                 </div>
               </SheetContent>

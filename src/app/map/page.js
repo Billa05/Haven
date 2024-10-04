@@ -25,11 +25,6 @@ export default function Home() {
 
   return (
     <>
-      <div className="p-4 z-10 relative">
-        <Link href={"/"}>
-          <Button>BACK</Button>
-        </Link>
-      </div>
       <div className={`${isBlurred ? "filter blur-md" : ""}`}>
         <div className="flex justify-center items-center">
           <form

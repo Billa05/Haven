@@ -34,7 +34,7 @@ export function CarouselSpacing() {
 //   }, []);
 
   return (
-    <div className="p-10 ">
+    <div className="p-10" id="tweets">
         <Label>Incidents reported on twitter</Label>
       <div className="grid md:grid-cols-3 gap-8 mt-3">
         {/* {tweets && tweets.map((tweet) => (

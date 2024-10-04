@@ -32,9 +32,11 @@ export const Hero38 = () => {
                     Explore Crime Map <Map className="w-4 h-4" />
                   </Button>
                 </Link>
-                <Button size="lg" className="gap-4">
-                  View Crime Reports <MoveRight className="w-4 h-4" />
-                </Button>
+                <Link href={"Community"}>
+                  <Button size="lg" className="gap-4">
+                    Community Reports <MoveRight className="w-4 h-4" />
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="rounded-md aspect-square">
