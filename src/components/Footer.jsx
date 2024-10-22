@@ -9,7 +9,7 @@ export default function Footer() {
             <YoutubeIcon className="h-6 w-6" />
             <span className="sr-only">YouTube</span>
           </Link>
-          <Link href="#" className="text-white hover:text-gray-300" prefetch={false}>
+          <Link href="https://github.com/Billa05/Haven" target="_blank" className="text-white hover:text-gray-300" prefetch={false}>
             <GithubIcon className="h-6 w-6" />
             <span className="sr-only">GitHub</span>
           </Link>

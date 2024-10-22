@@ -3,7 +3,7 @@ import { CityData } from "@/app/actions/CItyMapData";
 import "../OlaMapsWebSDK/style.css";
 import { OlaMaps } from "../OlaMapsWebSDK/olamaps-js-sdk.es";
 import { Skeleton } from "./ui/skeleton";
-import { CityContext, CityProvider } from "./CityContext";
+import { CityContext } from "./CityContext";
 import { useContext } from "react";
 
 export async function fetchCityName(lat, lon) {
@@ -25,7 +25,7 @@ export function EmojiMap({ CityProp }) {
   const [long, setLong] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState(null);
-  const {city,setCity} = useContext(CityContext);
+  const {setCity} = useContext(CityContext);
 
   useEffect(() => {
     const getUserLocation = () => {
@@ -50,9 +50,10 @@ export function EmojiMap({ CityProp }) {
       if (!CityProp) {
         const { latitude, longitude } = await getUserLocation();
         const detectedCity = await fetchCityName(latitude, longitude);
-        setCity(detectedCity);
+        await setCity(detectedCity);
         cityData = await CityData(detectedCity);
       } else {
+        await setCity(CityProp);
         cityData = await CityData(CityProp);
         setLat(cityData[0].lat);
         setLong(cityData[0].long);
