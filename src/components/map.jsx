@@ -8,7 +8,7 @@ import { EmojiMap } from "./EmojiMap";
 import { CityContext } from "./CityContext";
 
 export default function Map() {
-  const {city, setCity} = useContext(CityContext);
+  const { city, setCity } = useContext(CityContext);
   const [dcity, setdCity] = useState("");
   const [isBlurred, setIsBlurred] = useState(true);
 
@@ -37,7 +37,7 @@ export default function Map() {
               placeholder="Enter a city"
               value={dcity}
               onChange={(e) => setdCity(e.target.value)}
-              className="w-full text-white"
+              className="w-full text-grey-500 dark:text-white"
             />
             <Button type="submit" className="w-full ml-3">
               Search
@@ -58,7 +58,7 @@ export default function Map() {
               placeholder="Enter a city"
               value={dcity}
               onChange={(e) => setdCity(e.target.value)}
-              className="w-full text-white"
+              className="w-full text-grey-500 dark:text-white"
             />
             <Button type="submit" className="w-full">
               Search
